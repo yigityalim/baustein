@@ -5,6 +5,8 @@
 A developer-focused German language learning platform. Because we'd rather build custom tools than use generic apps.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub release](https://img.shields.io/github/v/release/yigityalim/baustein)](https://github.com/yigityalim/baustein/releases)
+[![GitHub deployments](https://img.shields.io/github/deployments/yigityalim/baustein/production)](https://github.com/yigityalim/baustein/deployments)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
