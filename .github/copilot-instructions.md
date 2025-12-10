@@ -88,6 +88,15 @@ Focus on these core tables:
 - `practice_sessions` — track practice history
 - `mistakes` — log incorrect answers for spaced repetition
 
+## Versioning
+
+**Semantic Versioning (MAJOR.MINOR.PATCH):**
+- **MAJOR** (1.0.0): Breaking changes, major feature releases
+- **MINOR** (0.x.0): New features, backward compatible
+- **PATCH** (0.0.x): Bug fixes, missing files, small tweaks
+
+**Rule:** Every commit that gets pushed to main should increment the version in `package.json` and update `CHANGELOG.md`.
+
 ## Reminders
 
 > "The goal is to learn German A1.1, not to build the perfect app."
