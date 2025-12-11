@@ -5,12 +5,17 @@ import {
   Gamepad2,
   LayoutDashboard,
   PlusCircle,
+  Settings,
   StickyNote,
   Type,
 } from "lucide-react";
+import { cookies } from "next/headers";
 import Link from "next/link";
+import { getUserProfileAction } from "@/actions/profile-actions";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { ResetDataButton } from "@/components/layout/reset-data-button";
+import { UserBadge } from "@/components/layout/user-badge";
+import { WorkspaceSwitcher } from "@/components/layout/workspace-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,10 +24,31 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { createClient } from "@/lib/supabase/server";
 
-export default function MainLayout({
+export default async function MainLayout({
   children,
 }: Readonly<React.PropsWithChildren>) {
+  const cookieStore = await cookies();
+  const activeGroupId = cookieStore.get("active_group_id")?.value || null;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let userGroups: any[] = [];
+  let userProfile = null;
+  if (user) {
+    const { data } = await supabase
+      .from("group_members")
+      .select("study_groups(id, name)")
+      .eq("user_id", user.id);
+
+    userGroups = data?.map((item) => item.study_groups) || [];
+    userProfile = await getUserProfileAction();
+  }
+
   const practiceLinks = [
     { href: "/practice/articles", label: "Artikel (Der/Die/Das)", icon: null },
     { href: "/practice/verbs", label: "Fiil Çekimi", icon: Type },
@@ -70,6 +96,12 @@ export default function MainLayout({
                 <span className="hidden lg:inline">Notlar</span>
               </Link>
             </Button>
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/settings" className="gap-2">
+                <Settings className="w-4 h-4" />
+                <span className="hidden lg:inline">Ayarlar</span>
+              </Link>
+            </Button>
 
             {/* PRACTICE DROPDOWN */}
             <DropdownMenu>
@@ -98,7 +130,14 @@ export default function MainLayout({
             </DropdownMenu>
 
             <div className="flex items-center gap-2 ml-2 pl-2 border-l">
+              <UserBadge />
               <ThemeToggle />
+              {user && (
+                <WorkspaceSwitcher
+                  groups={userGroups}
+                  activeGroupId={activeGroupId}
+                />
+              )}
               <ResetDataButton className="gap-2" />
             </div>
           </nav>
@@ -106,7 +145,12 @@ export default function MainLayout({
           {/* MOBILE NAV */}
           <div className="md:hidden flex items-center gap-2">
             <ThemeToggle />
-            <MobileNav />
+            <MobileNav
+              user={user}
+              groups={userGroups}
+              activeGroupId={activeGroupId}
+              userProfile={userProfile}
+            />
           </div>
         </div>
       </header>

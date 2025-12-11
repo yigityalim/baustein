@@ -4,20 +4,31 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
-export async function signInAnonymously() {
+export async function signInAnonymously(formData: FormData) {
   const supabase = await createClient();
 
-  // Önce mevcut session'ı kontrol et
+  // Kullanıcının girdiği ismi al, girmezse "Misafir Öğrenci" yap
+  const displayName = formData.get("username")?.toString() || "Misafir Öğrenci";
+
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
-  // Session yoksa yeni anonim giriş yap
   if (!session) {
-    const { error } = await supabase.auth.signInAnonymously();
+    // BURASI ÖNEMLİ: Meta data olarak ismi gönderiyoruz
+    // SQL Trigger'ımız bu ismi alıp 'profiles' tablosuna yazacak!
+    const { error } = await supabase.auth.signInAnonymously({
+      options: {
+        data: {
+          full_name: displayName,
+          avatar_url: `https://api.dicebear.com/7.x/notionists/svg?seed=${displayName}`, // Otomatik avatar
+        },
+      },
+    });
 
     if (error) {
       console.error("Auth error:", error.message);
+      return; // Hata varsa yönlendirme yapma
     }
   }
 

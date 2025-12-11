@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import type { TablesUpdate } from "@/types/database.types";
@@ -33,6 +34,9 @@ export async function addWordAction(
 ): Promise<FormState> {
   const supabase = await createClient();
 
+  const cookieStore = await cookies();
+  const activeGroupId = cookieStore.get("active_group_id")?.value;
+
   const type = formData.get("type");
 
   let conjugationData = null;
@@ -56,6 +60,7 @@ export async function addWordAction(
     example_sentence: formData.get("example_sentence"),
     category: formData.get("category"),
     conjugation: conjugationData,
+    group_id: activeGroupId || null, // 3. GRUP ID'SİNİ EKLE (Varsa grup, yoksa null)
   } as any;
 
   const validatedFields = formSchema.safeParse(rawData);
@@ -88,6 +93,9 @@ export async function updateWordAction(
   const supabase = await createClient();
 
   const id = formData.get("id") as string;
+
+  // Not: Update sırasında group_id değiştirmiyoruz, kelime hangi alandaysa orada kalır.
+  // Ancak eksik olan conjugation verilerini buraya eklemen iyi olur (isteğe bağlı).
 
   const rawData = {
     word: formData.get("word"),
@@ -131,25 +139,45 @@ export async function deleteWord(id: string) {
 export async function getDashboardStats() {
   const supabase = await createClient();
 
-  const { count: totalCount } = await supabase
+  const cookieStore = await cookies();
+  const activeGroupId = cookieStore.get("active_group_id")?.value;
+
+  const applyGroupFilter = (query: any) => {
+    if (activeGroupId) {
+      return query.eq("group_id", activeGroupId);
+    } else {
+      return query.is("group_id", null);
+    }
+  };
+
+  // 1. Toplam Kelime Sayısı
+  const totalQuery = supabase
     .from("vocabulary")
     .select("*", { count: "exact", head: true });
+  const { count: totalCount } = await applyGroupFilter(totalQuery);
 
-  const { count: nounCount } = await supabase
+  // 2. İsimler (Nouns)
+  const nounQuery = supabase
     .from("vocabulary")
     .select("*", { count: "exact", head: true })
     .eq("type", "noun");
+  const { count: nounCount } = await applyGroupFilter(nounQuery);
 
-  const { count: verbCount } = await supabase
+  // 3. Fiiller (Verbs)
+  const verbQuery = supabase
     .from("vocabulary")
     .select("*", { count: "exact", head: true })
     .eq("type", "verb");
+  const { count: verbCount } = await applyGroupFilter(verbQuery);
 
-  const { data: recentWords } = await supabase
+  // 4. Son Eklenenler
+  const recentQuery = supabase
     .from("vocabulary")
     .select("id, word, meaning_tr, type, article")
     .order("created_at", { ascending: false })
     .limit(5);
+
+  const { data: recentWords } = await applyGroupFilter(recentQuery);
 
   return {
     totalCount: totalCount || 0,

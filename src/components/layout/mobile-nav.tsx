@@ -2,17 +2,22 @@
 
 import {
   BookOpen,
+  Flame,
   FlaskConical,
   Gamepad2,
   LayoutDashboard,
   PlusCircle,
+  Settings,
   StickyNote,
   Type,
+  Zap,
 } from "lucide-react";
 import Link, { type LinkProps } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
 import { ResetDataButton } from "@/components/layout/reset-data-button";
+import { WorkspaceSwitcher } from "@/components/layout/workspace-switcher";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Popover,
   PopoverContent,
@@ -25,6 +30,7 @@ const MAIN_LINKS = [
   { href: "/add", label: "Kelime Ekle", icon: PlusCircle },
   { href: "/vocabulary", label: "Sözlük", icon: BookOpen },
   { href: "/notes", label: "Notlar", icon: StickyNote },
+  { href: "/settings", label: "Ayarlar", icon: Settings },
 ];
 
 const PRACTICE_LINKS = [
@@ -40,7 +46,22 @@ const PRACTICE_LINKS = [
   { href: "/practice/grammar", label: "Gramer Lab", icon: FlaskConical },
 ];
 
-export function MobileNav() {
+export function MobileNav({
+  user,
+  groups,
+  activeGroupId,
+  userProfile,
+}: {
+  user: { id: string } | null;
+  groups: { id: string; name: string }[];
+  activeGroupId: string | null;
+  userProfile: {
+    username: string | null;
+    avatar_url: string | null;
+    current_streak: number | null;
+    xp: number | null;
+  } | null;
+}) {
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
 
@@ -82,7 +103,47 @@ export function MobileNav() {
         alignOffset={-16}
         sideOffset={14}
       >
-        <div className="flex flex-col gap-12 px-6 py-8 overflow-auto">
+        <div className="flex flex-col gap-6 px-6 py-8 overflow-auto">
+          {/* Kullanıcı Rozeti */}
+          {userProfile && (
+            <div className="-mt-4">
+              <div className="flex items-center gap-3 bg-muted/30 p-1.5 pr-4 border border-border/50 rounded-full">
+                <Avatar className="border-2 border-background w-8 h-8">
+                  <AvatarImage src={userProfile.avatar_url || ""} />
+                  <AvatarFallback className="bg-primary font-bold text-primary-foreground text-xs">
+                    {userProfile.username?.substring(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className="flex items-center gap-3 text-sm">
+                  <span className="font-semibold">{userProfile.username}</span>
+
+                  <div className="bg-border w-px h-4" />
+
+                  <div
+                    className="flex items-center gap-1 text-orange-500"
+                    title="Günlük Seri"
+                  >
+                    <Flame className="fill-orange-500 w-4 h-4" />
+                    <span className="font-mono font-bold">
+                      {userProfile.current_streak}
+                    </span>
+                  </div>
+
+                  <div
+                    className="flex items-center gap-1 text-yellow-500"
+                    title="Toplam XP"
+                  >
+                    <Zap className="fill-yellow-500 w-4 h-4" />
+                    <span className="font-mono font-bold">
+                      {userProfile.xp}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="flex flex-col gap-4">
             <div className="font-medium text-muted-foreground text-sm">
               Menü
@@ -129,6 +190,14 @@ export function MobileNav() {
           </div>
 
           <div className="flex flex-col gap-4 mt-auto pt-4 border-t">
+            {user && (
+              <div className="px-2">
+                <WorkspaceSwitcher
+                  groups={groups}
+                  activeGroupId={activeGroupId}
+                />
+              </div>
+            )}
             <ResetDataButton
               variant="ghost"
               size="default"

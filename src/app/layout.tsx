@@ -16,10 +16,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "Baustein - Almanca A1.1",
-  description: "Stein auf Stein - Yazılımcıya özel Almanca öğrenme platformu",
-} satisfies Metadata;
+export const metadata: Metadata = {
+  title: "Baustein",
+  description: "Almanca Öğrenme Asistanı",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Baustein",
+  },
+};
 
 export const viewport = {
   width: "device-width",

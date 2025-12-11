@@ -14,11 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      group_members: {
+        Row: {
+          group_id: string | null
+          id: string
+          joined_at: string
+          user_id: string | null
+        }
+        Insert: {
+          group_id?: string | null
+          id?: string
+          joined_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          group_id?: string | null
+          id?: string
+          joined_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_members_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "study_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notes: {
         Row: {
           color: string | null
           content: string
           created_at: string
+          group_id: string | null
           id: string
           is_pinned: boolean | null
           tags: string[] | null
@@ -30,6 +60,7 @@ export type Database = {
           color?: string | null
           content: string
           created_at?: string
+          group_id?: string | null
           id?: string
           is_pinned?: boolean | null
           tags?: string[] | null
@@ -41,12 +72,51 @@ export type Database = {
           color?: string | null
           content?: string
           created_at?: string
+          group_id?: string | null
           id?: string
           is_pinned?: boolean | null
           tags?: string[] | null
           title?: string | null
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notes_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "study_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          current_streak: number | null
+          id: string
+          last_study_date: string | null
+          username: string | null
+          xp: number | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          current_streak?: number | null
+          id: string
+          last_study_date?: string | null
+          username?: string | null
+          xp?: number | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          current_streak?: number | null
+          id?: string
+          last_study_date?: string | null
+          username?: string | null
+          xp?: number | null
         }
         Relationships: []
       }
@@ -55,28 +125,66 @@ export type Database = {
           content: string
           created_at: string
           difficulty: number | null
+          group_id: string | null
           hint: string | null
           id: string
           meaning_tr: string
           topic: string
+          user_id: string | null
         }
         Insert: {
           content: string
           created_at?: string
           difficulty?: number | null
+          group_id?: string | null
           hint?: string | null
           id?: string
           meaning_tr: string
           topic: string
+          user_id?: string | null
         }
         Update: {
           content?: string
           created_at?: string
           difficulty?: number | null
+          group_id?: string | null
           hint?: string | null
           id?: string
           meaning_tr?: string
           topic?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sentences_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "study_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      study_groups: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          join_code: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          join_code: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          join_code?: string
+          name?: string
         }
         Relationships: []
       }
@@ -88,6 +196,7 @@ export type Database = {
           correct_count: number | null
           created_at: string
           example_sentence: string | null
+          group_id: string | null
           id: string
           image_url: string | null
           last_practiced_at: string | null
@@ -108,6 +217,7 @@ export type Database = {
           correct_count?: number | null
           created_at?: string
           example_sentence?: string | null
+          group_id?: string | null
           id?: string
           image_url?: string | null
           last_practiced_at?: string | null
@@ -128,6 +238,7 @@ export type Database = {
           correct_count?: number | null
           created_at?: string
           example_sentence?: string | null
+          group_id?: string | null
           id?: string
           image_url?: string | null
           last_practiced_at?: string | null
@@ -141,14 +252,65 @@ export type Database = {
           user_id?: string | null
           word?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "vocabulary_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "study_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      word_progress: {
+        Row: {
+          correct_count: number | null
+          id: string
+          last_practiced_at: string | null
+          mistake_count: number | null
+          next_review_at: string | null
+          user_id: string | null
+          vocabulary_id: string | null
+        }
+        Insert: {
+          correct_count?: number | null
+          id?: string
+          last_practiced_at?: string | null
+          mistake_count?: number | null
+          next_review_at?: string | null
+          user_id?: string | null
+          vocabulary_id?: string | null
+        }
+        Update: {
+          correct_count?: number | null
+          id?: string
+          last_practiced_at?: string | null
+          mistake_count?: number | null
+          next_review_at?: string | null
+          user_id?: string | null
+          vocabulary_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "word_progress_vocabulary_id_fkey"
+            columns: ["vocabulary_id"]
+            isOneToOne: false
+            referencedRelation: "vocabulary"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_my_group_ids: { Args: never; Returns: string[] }
+      record_word_practice: {
+        Args: { p_is_correct: boolean; p_vocab_id: string }
+        Returns: undefined
+      }
+      update_user_xp: { Args: { p_xp_amount: number }; Returns: undefined }
     }
     Enums: {
       article_type: "der" | "die" | "das"

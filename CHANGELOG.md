@@ -5,6 +5,116 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2025-12-12
+
+### Added
+- **Study Groups & Collaboration**: Create or join study groups with friends
+  - Create groups with auto-generated join codes (e.g., DE-X9Y2)
+  - Join groups using invite codes
+  - Group-specific vocabulary sharing (shared word pool)
+  - Group selector in navigation (workspace switcher)
+  - Active group badge on dashboard
+  - Group management page at /groups
+  - Leave group functionality
+  - Member count display
+
+- **Gamification System**: XP, streaks, and competitive features
+  - User profiles with XP (experience points) and streak tracking
+  - Daily streak counter (maintains if user studies consecutive days)
+  - XP rewards for completing practice games
+  - Profile badge showing username, streak (🔥), and XP (⚡)
+  - Automatic profile creation on first login
+
+- **Live Leaderboard**: Real-time ranking within study groups
+  - Top 10 users sorted by XP
+  - Shows username, avatar, XP, and current streak
+  - Medal indicators (🥇🥈🥉) for top 3
+  - Highlights current user's position
+  - Real-time updates via Supabase subscriptions
+  - Only visible when in a group
+
+- **Push Notifications**: Get notified when overtaken in leaderboard
+  - Browser notification API integration
+  - Settings page for notification permissions at /settings
+  - Notification hook (useNotification) for permission management
+  - Real-time alerts: "🏆 Dikkat! [username] seni geçti!"
+  - Permission status indicators (Active/Disabled/Pending)
+
+- **Progressive Web App (PWA)**: Install as native app
+  - PWA configuration with @ducanh2912/next-pwa
+  - Manifest.json with app metadata
+  - Service worker for offline capabilities
+  - App icons (192x192, 512x512)
+  - Installable on mobile and desktop
+
+- **Database Enhancements**:
+  - `profiles` table for user metadata (username, XP, streak, avatar)
+  - `study_groups` table with join codes
+  - `group_members` table for membership tracking
+  - `word_progress` table for individual user progress on shared vocabulary
+  - `group_id` column added to vocabulary, notes, and sentences
+  - Helper function `get_my_group_ids()` for RLS policies
+  - Gamification functions: `update_user_xp()` and `record_word_practice()`
+
+- **UI Components**:
+  - UserBadge component (avatar + username + streak + XP)
+  - WorkspaceSwitcher component (toggle between personal area and groups)
+  - LeaderboardCard component (real-time ranking display)
+  - CreateGroupForm and JoinGroupForm components
+  - Settings page layout
+  - Avatar, Command, and Popover UI components from shadcn/ui
+
+### Changed
+- **Login Page Redesign**: New username-based anonymous login
+  - Username input field instead of simple "Anonim Giriş" button
+  - Improved onboarding UX with clear benefits listed
+  - Username stored in user metadata and synced to profiles table
+  - New design with gradient button and benefit checklist
+
+- **Dashboard Layout Optimization**:
+  - Improved responsive grid system (md:grid-cols-12, md:grid-cols-2)
+  - Practice Center and Leaderboard side-by-side (8+4 col)
+  - Hızlı Erişim and Son Eklenenler in 2 columns
+  - Better card spacing and alignment
+
+- **Navigation Enhancements**:
+  - Added Settings link to desktop and mobile navigation
+  - UserBadge in desktop nav bar
+  - UserBadge in mobile menu (inside popover)
+  - WorkspaceSwitcher for group selection
+  - Conditional rendering based on group membership
+
+- **Metadata Updates**:
+  - Added PWA manifest reference
+  - Apple Web App capability tags
+  - Viewport configuration for mobile optimization
+
+- **Action Layer**:
+  - `getDashboardStats()` now filters by active group
+  - `addWordAction()` now assigns group_id based on active group
+  - New server actions: group-actions.ts, leaderboard-actions.ts, profile-actions.ts
+  - `setActiveGroupAction()` for switching workspaces
+
+- **Article Game**: Now calls `registerWordPractice()` to track user progress
+
+- **Database Types**: Regenerated with new tables (profiles, study_groups, group_members, word_progress)
+
+### Fixed
+- Async Server Component in Client Component error (UserBadge refactored to prop-based rendering)
+- Mobile header cramping issue (moved UserBadge from header to mobile menu)
+- Sentence builder word alignment (items-center added)
+- Verb trainer page spacing consistency
+
+### Security
+- **RLS Policies Updated for Groups**:
+  - Vocabulary: Users can access personal OR group vocabulary
+  - Notes: Same mixed access pattern (personal + group)
+  - Sentences: Added user_id column and proper RLS
+  - Profiles: Public read, owner-only update
+  - Study Groups: Member-based access control
+  - Group Members: Read own groups, join/leave functionality
+  - Word Progress: User-specific access only
+
 ## [0.3.6] - 2025-12-11
 
 ### Security

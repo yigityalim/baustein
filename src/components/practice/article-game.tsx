@@ -3,7 +3,7 @@
 import { Loader2, RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { getNounsForGame } from "@/actions/game-actions";
+import { getNounsForGame, registerWordPractice } from "@/actions/game-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -61,6 +61,8 @@ export function ArticleGame() {
           { duration: 1500 },
         );
       }
+
+      registerWordPractice(currentWord.id, isCorrect);
 
       setTimeout(
         () => {
