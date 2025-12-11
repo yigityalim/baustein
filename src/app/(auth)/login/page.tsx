@@ -73,7 +73,7 @@ export default function LoginPage() {
       <div className="flex flex-col items-center gap-4">
         <div className="flex items-center gap-3">
           <span className="bg-primary/10 px-3 py-1 rounded-full font-mono text-primary text-xs">
-            v0.3.0
+            v0.3.1
           </span>
           <span className="text-muted-foreground text-xs">·</span>
           <a

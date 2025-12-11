@@ -5,6 +5,7 @@ import {
   FlaskConical,
   Gamepad2,
   LayoutDashboard,
+  LogOut,
   PlusCircle,
   Type,
 } from "lucide-react";
@@ -16,7 +17,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { signOut } from "@/actions/auth-actions";
 
 const MAIN_LINKS = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -123,6 +126,19 @@ export function MobileNav() {
                 );
               })}
             </div>
+          </div>
+
+          <div className="flex flex-col gap-4 mt-auto pt-4 border-t">
+            <form action={signOut}>
+              <Button
+                type="submit"
+                variant="ghost"
+                className="gap-3 justify-start px-2 w-full font-medium text-2xl"
+              >
+                Çıkış Yap
+                <LogOut className="ml-auto w-5 h-5" />
+              </Button>
+            </form>
           </div>
         </div>
       </PopoverContent>

@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2025-12-11
+
+### Added
+- Logout button in desktop navigation (next to theme toggle)
+- Logout button in mobile navigation menu (at bottom)
+
+### Changed
+- Updated README with notes feature in Features section
+- Updated Roadmap with completed notes item
+- Added version badge (v0.3.0) to login page
+- Added contributors section with GitHub avatar on login page
+- Updated copilot-instructions with README update rule for MINOR versions
+
 ## [0.3.0] - 2025-12-11
 
 ### Added
