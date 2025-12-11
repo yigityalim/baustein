@@ -28,11 +28,51 @@ A developer-focused German language learning platform. Because we'd rather build
 
 ## ✨ Features
 
+### 👥 Study Groups & Collaboration
+- **Create study groups** with auto-generated join codes (e.g., DE-X9Y2)
+- **Join groups** using invite codes from friends
+- **Shared vocabulary pool** — Group members contribute to a common word database
+- **Group selector** — Switch between personal area and group workspaces
+- **Active group indicator** on dashboard
+- **Group management page** — View members, leave groups, share invite codes
+
+### 🏆 Gamification System
+- **XP (Experience Points)** — Earn points by completing practice games
+- **Daily streaks** 🔥 — Track consecutive days of studying
+- **User profiles** — Username, avatar, total XP, current streak
+- **Profile badge** — Shows your stats in navigation (username + 🔥 streak + ⚡ XP)
+- **Automatic profile creation** on first login
+
+### 📊 Live Leaderboard
+- **Real-time ranking** within your study group
+- **Top 10 display** sorted by XP
+- **Medal indicators** 🥇🥈🥉 for top 3 users
+- **Live updates** via Supabase real-time subscriptions
+- **Visual highlights** for your position
+- **Shows** username, avatar, XP, and current streak
+
+### 🔔 Push Notifications
+- **Browser notifications** when someone overtakes you in the leaderboard
+- **Settings page** to manage notification permissions
+- **Real-time alerts**: "🏆 Dikkat! [username] seni geçti!"
+- **Permission status indicators** (Active/Disabled/Pending)
+- Works seamlessly with PWA installation
+
+### 📱 Progressive Web App (PWA)
+- **Installable** on mobile and desktop devices
+- **Offline support** via service worker
+- **Native app experience** with app icons and splash screen
+- **Home screen icon** for quick access
+- **App manifest** with metadata
+
 ### 📚 Vocabulary Management
 - Add words with article, plural, translation, and example sentences
 - Color-coded articles: **der** (blue), **die** (red), **das** (green)
 - Edit and delete entries
 - Search and filter your personal dictionary
+- **Group-aware filtering** — See personal or group vocabulary
+- **Individual progress tracking** via word_progress table
+- **Export/Import** — Backup and restore your data as JSON
 
 ### 📝 Personal Notes
 - **Markdown-powered notes** — Write learning notes with formatting support
@@ -40,18 +80,24 @@ A developer-focused German language learning platform. Because we'd rather build
 - **Pin important notes** — Keep critical notes at the top
 - **Color-coded cards** — Visual organization with custom colors
 - **Last updated timestamps** — Track when you last edited notes
+- **Group notes** — Share notes within study groups
 
 ### 🎮 Practice Modes
-- **Artikel Trainer** — Tinder-style card game for der/die/das
+- **Artikel Trainer** — Tinder-style card game for der/die/das (with progress tracking)
 - **Flashcards** — Classic flip cards with translations
 - **Number Trainer** — Practice German numbers (0-99)
 - **Sentence Builder** — Construct German sentences from words
+- **Verb Conjugation Trainer** — Practice ich/du/er/sie/es forms
+- **Grammar Lab** — Negation, smalltalk, W-Fragen practice
 
 ### 🎨 Modern UI
 - Dark mode support
 - Fully responsive (mobile-first design)
 - Smooth animations and transitions
 - Progress tracking with visual feedback
+- **User badge** in navigation (desktop + mobile)
+- **Workspace switcher** (personal/group toggle)
+- **Settings page** for app configuration
 
 ---
 
@@ -157,45 +203,82 @@ A developer-focused German language learning platform. Because we'd rather build
 ```
 src/
 ├── app/
-│   ├── (auth)/login/          # Authentication
-│   └── (main)/                # Main app
-│       ├── layout.tsx         # Navigation & header
-│       ├── page.tsx           # Dashboard
+│   ├── (auth)/login/          # Username-based anonymous login
+│   └── (main)/                # Main app with shared layout
+│       ├── layout.tsx         # Navigation, sidebar, user badge
+│       ├── page.tsx           # Dashboard (stats + leaderboard)
 │       ├── add/               # Add new words
-│       ├── vocabulary/        # Word list
-│       └── practice/          # Practice modes
+│       ├── vocabulary/        # Word list (filtered by workspace)
+│       ├── notes/             # Personal notes (markdown)
+│       ├── groups/            # Study group management
+│       ├── settings/          # App settings (notifications)
+│       └── practice/
 │           ├── articles/      # Der/Die/Das game
-│           ├── flashcards/    # Flashcards
+│           ├── flashcards/    # Flash cards
 │           ├── numbers/       # Number trainer
-│           └── sentences/     # Sentence builder
+│           ├── sentences/     # Sentence builder
+│           ├── verbs/         # Verb conjugation
+│           └── grammar/       # Grammar Lab
 ├── components/
-│   ├── ui/                    # shadcn components
-│   ├── layout/                # Navigation components
-│   ├── vocabulary/            # Word forms & dialogs
-│   └── practice/              # Game components
-├── lib/supabase/              # Supabase clients
+│   ├── ui/                    # shadcn components (Avatar, Command, etc.)
+│   ├── layout/                # Nav, sidebar, UserBadge, WorkspaceSwitcher
+│   ├── vocabulary/            # Word form, word list, edit dialog
+│   ├── practice/              # Game components
+│   ├── dashboard/             # LeaderboardCard
+│   └── groups/                # CreateGroupForm, JoinGroupForm
+├── lib/supabase/              # Supabase clients (server, client)
 ├── actions/                   # Server actions
-└── types/                     # TypeScript types
+│   ├── vocabulary-actions.ts # CRUD for words (group-aware)
+│   ├── notes-actions.ts       # CRUD for notes
+│   ├── game-actions.ts        # Practice games, XP tracking
+│   ├── group-actions.ts       # Create/join/leave groups
+│   ├── leaderboard-actions.ts # Get leaderboard (filtered by group)
+│   └── profile-actions.ts     # Get user profile
+├── hooks/                     # Custom React hooks
+│   └── use-notification.ts    # Notification API wrapper
+└── types/                     # TypeScript types (database.types.ts)
 ```
 
 ---
 
 ## 🎯 Roadmap
 
+### ✅ Completed (v0.4.0)
 - [x] Vocabulary CRUD operations
-- [x] Artikel practice game
+- [x] Artikel practice game with progress tracking
 - [x] Flashcards
 - [x] Number trainer
 - [x] Sentence builder
+- [x] Verb conjugation trainer
+- [x] Grammar Lab (negation, smalltalk, W-Fragen)
 - [x] Personal notes with markdown support
 - [x] Dark mode
 - [x] Mobile responsive design
-- [ ] Verb conjugation practice
-- [ ] Spaced repetition algorithm
-- [ ] Progress tracking (daily streaks, mastery levels)
-- [ ] Category system (colors, days, months, etc.)
-- [ ] Audio pronunciation
-- [ ] Export/Import vocabulary
+- [x] Export/Import vocabulary and notes
+- [x] **Study groups with shared vocabulary**
+- [x] **Gamification (XP + streaks)**
+- [x] **Live leaderboard with real-time updates**
+- [x] **Push notifications**
+- [x] **Progressive Web App (PWA)**
+- [x] **User profiles with avatars**
+- [x] **Group-aware data filtering**
+- [x] **Individual word progress tracking**
+
+### 🚧 In Progress
+- [ ] Spaced repetition algorithm (using word_progress data)
+- [ ] Category system (colors, days, months, body parts, etc.)
+- [ ] Achievement badges (milestones, streaks, perfect games)
+- [ ] Group leaderboard history charts
+
+### 📋 Planned
+- [ ] Audio pronunciation (text-to-speech for German words)
+- [ ] Listening comprehension exercises
+- [ ] Daily challenges and quests
+- [ ] Group chat for study groups
+- [ ] Profile customization (avatar upload, bio)
+- [ ] Weekly/monthly XP reports
+- [ ] Multiplayer games (real-time battles)
+- [ ] Study reminders (push notifications for inactive users)
 
 ---
 
