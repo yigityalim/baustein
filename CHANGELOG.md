@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-12-11
+
+### Added
+- **Notes Feature**: Personal note-taking system for German learning
+  - Markdown support for formatting
+  - Tag-based organization with visual badges
+  - Pin important notes to top
+  - Color-coded notes (yellow, red, blue, green)
+  - Last updated timestamp with relative time (e.g., "5d önce")
+- **TypeScript Type Safety**
+  - Replaced all `any` types with `Tables<"notes">`, `TablesInsert`, `TablesUpdate`
+  - Full type safety in server actions and components
+- **Validation**
+  - Zod schema validation for add/update operations
+  - Error messages shown to users
+- **Loading States**
+  - Submit buttons show "Kaydediliyor..." / "Güncelleniyor..."
+  - Delete and Pin actions have disabled states during execution
+- **SQL Migration Structure**
+  - Professional migration files with timestamp naming
+  - Separated structure: schema → security → indexes → seed
+  - Performance indexes for notes queries
+
+### Changed
+- Migrated SQL files to versioned migration format
+- Improved tag input UX with badge removal on click
+
+### Database
+- New table: `notes` (title, content, tags, is_pinned, color, user_id)
+- RLS policies for user-specific note access
+- Performance indexes: `idx_notes_user_id`, `idx_notes_pinned_created`, `idx_notes_tags` (GIN)
+- Auto-updated `updated_at` trigger using moddatetime extension
+
 ## [0.2.4] - 2025-12-11
 
 ### Added
@@ -75,6 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Zod validation for forms
 - Shadcn/ui component library integration
 
+[0.3.0]: https://github.com/yigityalim/baustein/compare/v0.2.4...v0.3.0
 [0.2.4]: https://github.com/yigityalim/baustein/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/yigityalim/baustein/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/yigityalim/baustein/compare/v0.2.1...v0.2.2

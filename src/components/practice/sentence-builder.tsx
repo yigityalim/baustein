@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle2, Lightbulb, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { getSentences } from "@/actions/sentence-actions";
-import { Badge } from "@/components/ui/badge"; // EKSİK OLABİLİR
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
