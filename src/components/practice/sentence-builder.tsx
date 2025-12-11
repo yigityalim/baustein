@@ -118,7 +118,7 @@ export function SentenceBuilder({ topic = "ja_nein" }: { topic?: string }) {
       </div>
 
       <Card
-        className={`min-h-[100px] flex flex-wrap items-center justify-center p-6 gap-2 border-2 transition-all duration-300
+        className={`min-h-[100px] flex flex-row flex-wrap items-center justify-center p-6 gap-2 border-2 transition-all duration-300
         ${isCorrect === true ? "border-green-500 bg-green-50 dark:bg-green-900/20 shadow-[0_0_20px_rgba(34,197,94,0.3)]" : ""}
         ${isCorrect === false ? "border-red-500 bg-red-50 dark:bg-red-900/20 shadow-[0_0_20px_rgba(239,68,68,0.3)]" : "border-dashed border-slate-300"}
       `}
@@ -140,7 +140,7 @@ export function SentenceBuilder({ topic = "ja_nein" }: { topic?: string }) {
         ))}
       </Card>
 
-      <div className="flex flex-wrap justify-center gap-3 min-h-[80px]">
+      <div className="flex flex-row flex-wrap justify-center items-center gap-3 min-h-[80px]">
         {scrambledWords.map((word, idx) => (
           <Button
             key={idx}

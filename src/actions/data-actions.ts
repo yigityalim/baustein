@@ -18,7 +18,9 @@ export type ExportData = {
       | "mistake_count"
     >
   >;
-  notes: Array<Omit<Tables<"notes">, "id" | "user_id" | "created_at" | "updated_at">>;
+  notes: Array<
+    Omit<Tables<"notes">, "id" | "user_id" | "created_at" | "updated_at">
+  >;
 };
 
 export async function exportUserData(): Promise<ExportData | null> {

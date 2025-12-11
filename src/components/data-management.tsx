@@ -4,9 +4,9 @@ import { Download, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import {
+  type ExportData,
   exportUserData,
   importUserData,
-  type ExportData,
 } from "@/actions/data-actions";
 import {
   AlertDialog,
@@ -19,7 +19,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export function DataManagement() {
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
@@ -148,7 +154,10 @@ export function DataManagement() {
         </CardContent>
       </Card>
 
-      <AlertDialog open={isImportDialogOpen} onOpenChange={setIsImportDialogOpen}>
+      <AlertDialog
+        open={isImportDialogOpen}
+        onOpenChange={setIsImportDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Verileri İçe Aktar</AlertDialogTitle>
@@ -156,7 +165,8 @@ export function DataManagement() {
               {importData && (
                 <>
                   <strong>{importData.vocabulary.length}</strong> kelime ve{" "}
-                  <strong>{importData.notes.length}</strong> not içe aktarılacak.
+                  <strong>{importData.notes.length}</strong> not içe
+                  aktarılacak.
                   <br />
                   <br />
                   Mevcut verileriniz silinmeyecek, yeni veriler eklenecek.

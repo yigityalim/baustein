@@ -8,8 +8,7 @@ export default async function SentencesPage({
   const topic = (await searchParams)?.topic || "ja_nein";
 
   return (
-    <div className="py-10 container">
-      {/* Başlığı Dinamik Yapalım */}
+    <div className="space-y-6 md:space-y-8 mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl container">
       <div className="mb-6 text-center">
         <h1 className="font-bold text-2xl capitalize">
           {topic === "negation"
