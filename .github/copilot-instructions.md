@@ -95,7 +95,12 @@ Focus on these core tables:
 - **MINOR** (0.x.0): New features, backward compatible
 - **PATCH** (0.0.x): Bug fixes, missing files, small tweaks
 
-**Rule:** Every commit that gets pushed to main should increment the version in `package.json` and update `CHANGELOG.md`.
+**Rules:**
+- Every commit that gets pushed to main should increment the version in `package.json` and update `CHANGELOG.md`
+- When adding new features (MINOR version), update `README.md` to reflect the changes:
+  - Add feature to the Features section
+  - Update Roadmap (mark completed items)
+  - Update Project Structure if needed
 
 ## Reminders
 

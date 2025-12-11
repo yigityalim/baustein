@@ -34,6 +34,13 @@ A developer-focused German language learning platform. Because we'd rather build
 - Edit and delete entries
 - Search and filter your personal dictionary
 
+### 📝 Personal Notes
+- **Markdown-powered notes** — Write learning notes with formatting support
+- **Tag-based organization** — Categorize notes (grammar, exam, vocabulary)
+- **Pin important notes** — Keep critical notes at the top
+- **Color-coded cards** — Visual organization with custom colors
+- **Last updated timestamps** — Track when you last edited notes
+
 ### 🎮 Practice Modes
 - **Artikel Trainer** — Tinder-style card game for der/die/das
 - **Flashcards** — Classic flip cards with translations
@@ -180,6 +187,7 @@ src/
 - [x] Flashcards
 - [x] Number trainer
 - [x] Sentence builder
+- [x] Personal notes with markdown support
 - [x] Dark mode
 - [x] Mobile responsive design
 - [ ] Verb conjugation practice
