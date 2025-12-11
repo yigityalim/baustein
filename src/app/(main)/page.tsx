@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { getDashboardStats } from "@/actions/vocabulary-actions";
+import { DataManagement } from "@/components/data-management";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -293,6 +294,13 @@ export default async function DashboardPage() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Data Management Section */}
+      <div className="gap-4 grid md:grid-cols-2 lg:grid-cols-3">
+        <div className="col-span-1">
+          <DataManagement />
+        </div>
       </div>
     </div>
   );

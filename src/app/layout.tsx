@@ -1,5 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import type React from "react";
@@ -20,6 +20,13 @@ export const metadata = {
   title: "Baustein - Almanca A1.1",
   description: "Stein auf Stein - Yazılımcıya özel Almanca öğrenme platformu",
 } satisfies Metadata;
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+} satisfies Viewport;
 
 export default function RootLayout({
   children,

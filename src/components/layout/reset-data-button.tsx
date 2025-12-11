@@ -49,7 +49,9 @@ export function ResetDataButton({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Tüm verileri silmek istediğine emin misin?</AlertDialogTitle>
+          <AlertDialogTitle>
+            Tüm verileri silmek istediğine emin misin?
+          </AlertDialogTitle>
           <AlertDialogDescription>
             Bu işlem geri alınamaz. Tüm kelimeler, notlar ve ilerleme kaydın
             kalıcı olarak silinecek. Yeni bir başlangıç yapacaksın.
@@ -59,7 +61,7 @@ export function ResetDataButton({
           <AlertDialogCancel>İptal</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleReset}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
           >
             Evet, Tümünü Sil
           </AlertDialogAction>

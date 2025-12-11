@@ -132,7 +132,7 @@ export function MobileNav() {
             <ResetDataButton
               variant="ghost"
               size="default"
-              className="gap-3 justify-start px-2 w-full font-medium text-2xl"
+              className="justify-start gap-3 px-2 w-full font-medium text-2xl"
               textLabel="Verileri Sıfırla"
             />
           </div>
