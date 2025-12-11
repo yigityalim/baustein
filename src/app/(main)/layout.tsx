@@ -4,16 +4,15 @@ import {
   FlaskConical,
   Gamepad2,
   LayoutDashboard,
-  LogOut,
   PlusCircle,
   StickyNote,
   Type,
 } from "lucide-react";
 import Link from "next/link";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { ResetDataButton } from "@/components/layout/reset-data-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { signOut } from "@/actions/auth-actions";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -98,14 +97,9 @@ export default function MainLayout({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <div className="ml-2 pl-2 border-l flex items-center gap-2">
+            <div className="flex items-center gap-2 ml-2 pl-2 border-l">
               <ThemeToggle />
-              <form action={signOut}>
-                <Button variant="ghost" size="sm" type="submit" className="gap-2">
-                  <LogOut className="w-4 h-4" />
-                  <span className="hidden lg:inline">Çıkış</span>
-                </Button>
-              </form>
+              <ResetDataButton className="gap-2" />
             </div>
           </nav>
 

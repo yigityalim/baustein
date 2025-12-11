@@ -227,7 +227,9 @@ export default async function DashboardPage() {
                     </p>
                   </div>
                 </div>
-                <Button variant="ghost" size="sm">Aç</Button>
+                <Button variant="ghost" size="sm">
+                  Aç
+                </Button>
               </div>
             </Link>
             <Link href="/vocabulary">
@@ -243,7 +245,9 @@ export default async function DashboardPage() {
                     </p>
                   </div>
                 </div>
-                <Button variant="ghost" size="sm">Görüntüle</Button>
+                <Button variant="ghost" size="sm">
+                  Görüntüle
+                </Button>
               </div>
             </Link>
           </CardContent>

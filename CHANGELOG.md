@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.3] - 2025-12-11
+
+### Added
+- **Persistent Anonymous Session**: Session is now maintained across browser sessions
+- **Data Reset Feature**: "Verileri Sıfırla" button with confirmation dialog
+  - Deletes all vocabulary, notes, and user data
+  - Requires confirmation before deletion
+  - Creates fresh start for users
+
+### Changed
+- `signInAnonymously` now checks for existing session before creating new one
+- Renamed `signOut` to `resetAllData` to better reflect its purpose
+- Logout button changed to "Verileri Sıfırla" with destructive action warning
+
+### Fixed
+- Anonymous users now retain their data across sessions
+- Notes and vocabulary persist after closing the browser
+
 ## [0.3.2] - 2025-12-11
 
 ### Added

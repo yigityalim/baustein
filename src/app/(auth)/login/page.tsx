@@ -73,19 +73,19 @@ export default function LoginPage() {
       <div className="flex flex-col items-center gap-4">
         <div className="flex items-center gap-3">
           <span className="bg-primary/10 px-3 py-1 rounded-full font-mono text-primary text-xs">
-            v0.3.2
+            v0.3.3
           </span>
           <span className="text-muted-foreground text-xs">·</span>
           <a
             href="https://github.com/yigityalim/baustein"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-foreground text-muted-foreground text-xs underline transition-colors"
+            className="text-muted-foreground hover:text-foreground text-xs underline transition-colors"
           >
             Open Source on GitHub
           </a>
         </div>
-        
+
         {/* Contributors */}
         <div className="flex flex-col items-center gap-2">
           <p className="text-muted-foreground text-xs">Built by</p>
