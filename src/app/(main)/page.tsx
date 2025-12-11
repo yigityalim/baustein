@@ -214,7 +214,7 @@ export default async function DashboardPage() {
               <CardTitle>Hızlı Erişim</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="flex flex-col gap-3">
             <Link href="/notes">
               <div className="flex justify-between items-center bg-card hover:bg-accent/50 p-4 border rounded-lg transition-colors cursor-pointer">
                 <div className="flex items-center space-x-4">
