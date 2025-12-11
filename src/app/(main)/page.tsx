@@ -4,6 +4,7 @@ import {
   FlaskConical,
   Gamepad2,
   PlusCircle,
+  StickyNote,
   TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
@@ -208,6 +209,48 @@ export default async function DashboardPage() {
 
         <Card className="col-span-4 md:col-span-3">
           <CardHeader>
+            <div className="flex justify-between items-center">
+              <CardTitle>Hızlı Erişim</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <Link href="/notes">
+              <div className="flex justify-between items-center bg-card hover:bg-accent/50 p-4 border rounded-lg transition-colors cursor-pointer">
+                <div className="flex items-center space-x-4">
+                  <div className="bg-yellow-100 dark:bg-yellow-900 p-2 rounded-full">
+                    <StickyNote className="w-5 h-5 text-yellow-700 dark:text-yellow-300" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm">Notlarım</h4>
+                    <p className="text-muted-foreground text-xs">
+                      Öğrenme notları ve ipuçları
+                    </p>
+                  </div>
+                </div>
+                <Button variant="ghost" size="sm">Aç</Button>
+              </div>
+            </Link>
+            <Link href="/vocabulary">
+              <div className="flex justify-between items-center bg-card hover:bg-accent/50 p-4 border rounded-lg transition-colors cursor-pointer">
+                <div className="flex items-center space-x-4">
+                  <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full">
+                    <BookOpen className="w-5 h-5 text-blue-700 dark:text-blue-300" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm">Sözlüğüm</h4>
+                    <p className="text-muted-foreground text-xs">
+                      Tüm kelimelerim
+                    </p>
+                  </div>
+                </div>
+                <Button variant="ghost" size="sm">Görüntüle</Button>
+              </div>
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card className="col-span-4 md:col-span-3">
+          <CardHeader>
             <CardTitle>Son Eklenenler</CardTitle>
           </CardHeader>
           <CardContent>
@@ -217,7 +260,7 @@ export default async function DashboardPage() {
                   Henüz kelime yok.
                 </p>
               ) : (
-                stats.recentWords.map((item: any) => (
+                stats.recentWords.map((item) => (
                   <div
                     key={item.id}
                     className="flex justify-between items-center pb-2 last:pb-0 last:border-0 border-b"

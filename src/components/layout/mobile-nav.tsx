@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   LogOut,
   PlusCircle,
+  StickyNote,
   Type,
 } from "lucide-react";
 import Link, { type LinkProps } from "next/link";
@@ -25,6 +26,7 @@ const MAIN_LINKS = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/add", label: "Kelime Ekle", icon: PlusCircle },
   { href: "/vocabulary", label: "Sözlük", icon: BookOpen },
+  { href: "/notes", label: "Notlar", icon: StickyNote },
 ];
 
 const PRACTICE_LINKS = [

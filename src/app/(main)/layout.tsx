@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   LogOut,
   PlusCircle,
+  StickyNote,
   Type,
 } from "lucide-react";
 import Link from "next/link";
@@ -62,6 +63,12 @@ export default function MainLayout({
               <Link href="/vocabulary" className="gap-2">
                 <BookOpen className="w-4 h-4" />
                 <span className="hidden lg:inline">Sözlük</span>
+              </Link>
+            </Button>
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/notes" className="gap-2">
+                <StickyNote className="w-4 h-4" />
+                <span className="hidden lg:inline">Notlar</span>
               </Link>
             </Button>
 

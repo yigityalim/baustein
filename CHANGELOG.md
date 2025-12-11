@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2] - 2025-12-11
+
+### Added
+- Notes link in desktop navigation header
+- Notes link in mobile navigation menu
+- "Hızlı Erişim" quick access card on dashboard with Notes and Vocabulary shortcuts
+
+### Fixed
+- Removed `any` type from dashboard recent words mapping
+
 ## [0.3.1] - 2025-12-11
 
 ### Added
