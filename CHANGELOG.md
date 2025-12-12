@@ -5,6 +5,59 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2025-12-12
+
+### Added
+- **SEO Optimization**: Comprehensive search engine optimization
+  - Added metadata to all pages (title, description, Open Graph tags, Twitter cards)
+  - Implemented robots.txt for crawler directives
+  - Created dynamic sitemap.xml with all routes, priorities, and change frequencies
+  - Added PWA manifest.ts for progressive web app metadata
+  - Added NEXT_PUBLIC_SITE_URL environment variable
+
+- **Performance Improvements**: Better loading and caching
+  - Implemented ISR (Incremental Static Regeneration):
+    - Dashboard: 60-second revalidation
+    - Vocabulary & Notes: 30-second revalidation
+  - Created loading skeletons for better UX:
+    - Dashboard skeleton with stat cards
+    - Vocabulary table skeleton (10 rows)
+    - Groups grid skeleton (2 columns)
+    - Practice game skeleton
+  - Optimized image loading:
+    - AVIF and WebP format support
+    - Supabase domain whitelisting
+    - Cache TTL configuration (60 seconds)
+
+- **New Components**:
+  - `SiteHeader` server component for header rendering
+  - `UserBadgeDropdown` client component for user badge
+  - Loading components for all main sections
+  - Verb conjugation fields component
+  - Noun fields component
+
+### Changed
+- **Architecture Improvements**:
+  - Extracted header to `SiteHeader` server component
+  - Moved UserBadge data fetching from client to server (layout level)
+  - Refactored layout.tsx to use server-side data fetching for header props
+
+- **Performance Tweaks**:
+  - Replaced `force-dynamic` with `revalidate` for better caching
+  - Updated next.config.ts with image optimization settings
+
+### Fixed
+- **Hydration Issues**:
+  - Fixed "Server rendered HTML didn't match client" errors
+  - Resolved WordForm hydration by removing responsive grid layout
+  - Fixed "Server Functions cannot be called during initial render" error
+  - Moved async data fetching to proper server components
+
+### Technical Details
+- Build output: All authenticated pages remain dynamic (ƒ) as intended
+- Static pages: login, robots.txt, sitemap.xml, manifest pre-rendered (○)
+- 42 files changed with comprehensive refactoring
+
 ## [0.4.0] - 2025-12-12
 
 ### Added

@@ -65,6 +65,15 @@ A developer-focused German language learning platform. Because we'd rather build
 - **Home screen icon** for quick access
 - **App manifest** with metadata
 
+### 🔍 SEO & Performance
+- **Comprehensive metadata** on all pages (title, description, OG tags, Twitter cards)
+- **Dynamic sitemap** with proper priorities and change frequencies
+- **robots.txt** for search engine crawler directives
+- **ISR (Incremental Static Regeneration)** with smart revalidation timers
+- **Image optimization** with AVIF/WebP formats and Supabase CDN
+- **Loading skeletons** for better perceived performance
+- **Optimized build output** with server-side rendering where needed
+
 ### 📚 Vocabulary Management
 - Add words with article, plural, translation, and example sentences
 - Color-coded articles: **der** (blue), **die** (red), **das** (green)
@@ -243,7 +252,7 @@ src/
 
 ## 🎯 Roadmap
 
-### ✅ Completed (v0.4.0)
+### ✅ Completed (v0.5.0)
 - [x] Vocabulary CRUD operations
 - [x] Artikel practice game with progress tracking
 - [x] Flashcards
@@ -263,6 +272,8 @@ src/
 - [x] **User profiles with avatars**
 - [x] **Group-aware data filtering**
 - [x] **Individual word progress tracking**
+- [x] **SEO optimization (metadata, sitemap, robots.txt)**
+- [x] **Performance optimization (ISR, image optimization, loading states)**
 
 ### 🚧 In Progress
 - [ ] Spaced repetition algorithm (using word_progress data)
