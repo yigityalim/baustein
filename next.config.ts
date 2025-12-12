@@ -1,4 +1,3 @@
-import withPWA from "@ducanh2912/next-pwa";
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
@@ -7,11 +6,11 @@ const config: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "api.dicebear.com", // Avatar için
+        hostname: "api.dicebear.com",
       },
       {
         protocol: "https",
-        hostname: "*.supabase.co", // Supabase storage
+        hostname: "*.supabase.co",
       },
     ],
     formats: ["image/avif", "image/webp"],
@@ -21,15 +20,4 @@ const config: NextConfig = {
   },
 };
 
-const nextPWA = withPWA({
-  dest: "public", // Service worker'ın oluşturulacağı yer
-  cacheOnFrontEndNav: true,
-  aggressiveFrontEndNavCaching: true,
-  reloadOnOnline: true,
-  disable: process.env.NODE_ENV === "development", // Geliştirme modunda kapalı olsun
-  workboxOptions: {
-    disableDevLogs: true,
-  },
-});
-
-export default nextPWA(config);
+export default config;

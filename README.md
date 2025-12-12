@@ -65,6 +65,14 @@ A developer-focused German language learning platform. Because we'd rather build
 - **Home screen icon** for quick access
 - **App manifest** with metadata
 
+### 🔄 Device Synchronization
+- **QR code-based session transfer** — Scan to instantly sync your account to another device
+- **6-digit pairing codes** — Enter code manually if QR scanning isn't available
+- **Cross-platform support** — Works on desktop, mobile, and tablet
+- **Secure token handling** — Session tokens stored temporarily (5-minute expiration)
+- **Seamless experience** — Login on new device without losing progress
+- **Settings integration** — Generate pairing codes from Profile > Device Pairing
+
 ### 🔍 SEO & Performance
 - **Comprehensive metadata** on all pages (title, description, OG tags, Twitter cards)
 - **Dynamic sitemap** with proper priorities and change frequencies

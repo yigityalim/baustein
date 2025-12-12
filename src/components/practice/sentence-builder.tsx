@@ -85,6 +85,7 @@ export function SentenceBuilder({ topic = "ja_nein" }: { topic?: string }) {
         <RefreshCw className="animate-spin" /> Yükleniyor...
       </div>
     );
+
   if (sentences.length === 0)
     return (
       <div className="p-10 text-center">Bu konuda henüz cümle eklenmemiş.</div>

@@ -38,23 +38,28 @@ export async function signInAnonymously(formData: FormData) {
 
 export async function resetAllData() {
   const supabase = await createClient();
+  
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
 
-  // Kullanıcının tüm verilerini sil
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // 1. Tabloları temizle (Sıra önemli olabilir foreign key yüzünden)
+  // group_members ve profiles tabloları 'cascade' ise otomatik silinir ama manuel yapmak güvenlidir.
+  await supabase.from('notes').delete().eq('user_id', user.id);
+  await supabase.from('vocabulary').delete().eq('user_id', user.id);
+  await supabase.from('word_progress').delete().eq('user_id', user.id);
+  
+  // Profil puanlarını sıfırla (Profili silmek yerine resetlemek daha güvenli olabilir)
+  await supabase.from('profiles').update({ 
+    xp: 0, 
+    current_streak: 0, 
+    last_study_date: null 
+  }).eq('id', user.id);
 
-  if (user) {
-    // Notları sil
-    await supabase.from("notes").delete().eq("user_id", user.id);
-    // Kelimeleri sil
-    await supabase.from("vocabulary").delete().eq("user_id", user.id);
-  }
-
-  // Oturumu kapat
+  // 2. Çıkış yap ve yönlendir
   await supabase.auth.signOut();
-  revalidatePath("/", "layout");
-  redirect("/login");
+  
+  revalidatePath('/', 'layout');
+  redirect('/login');
 }
 
 export async function getUser() {

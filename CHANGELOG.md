@@ -8,6 +8,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.5.0] - 2025-12-12
 
 ### Added
+- **Device Synchronization**: Transfer your session between devices seamlessly
+  - QR code-based session transfer using `react-qr-code`
+  - 6-digit pairing codes with 5-minute expiration
+  - `SyncGenerator` component for creating transfer codes
+  - Automatic session setup on target device
+  - Login page integration with code input and QR scanning
+  - `session_transfers` database table for secure token storage
+  - Server actions: `createTransferCodeAction()` and `claimTransferCodeAction()`
+  - Works across desktop, mobile, and tablet devices
+
+- **Enhanced Settings Page**: Comprehensive app management
+  - **Device Pairing Section**: Generate QR codes and pairing codes
+  - **Danger Zone**: Data reset functionality with confirmation dialog
+  - Visual organization with color-coded sections (notifications, sync, danger)
+  - AlertDialog component for destructive actions
+
+- **Improved Word Form UI**: Streamlined vocabulary entry
+  - Collapsible "Daha Fazla Detay" section for optional fields
+  - Color-coded artikel selection (der=blue, die=red, das=green)
+  - Dynamic submit button colors matching selected artikel
+  - "Hızlı Kaydet" quick save button with icon
+  - Smooth animations for showing/hiding detail sections
+  - Improved mobile responsiveness with better spacing
+  - Auto-focus on word input field
+
+- **Data Reset Feature**: Complete account cleanup
+  - `resetAllData()` server action with comprehensive cleanup
+  - Deletes vocabulary, notes, word_progress entries
+  - Resets profile XP, streak, and last_study_date
+  - Confirmation dialog with destructive action warning
+  - Automatic logout and redirect after reset
+  - Affects all connected devices (session-wide)
+
 - **SEO Optimization**: Comprehensive search engine optimization
   - Added metadata to all pages (title, description, Open Graph tags, Twitter cards)
   - Implemented robots.txt for crawler directives
@@ -30,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Cache TTL configuration (60 seconds)
 
 - **New Components**:
+  - `SyncGenerator` component for device pairing
   - `SiteHeader` server component for header rendering
   - `UserBadgeDropdown` client component for user badge
   - Loading components for all main sections
@@ -37,26 +71,65 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Noun fields component
 
 ### Changed
+- **Login Page Enhancements**:
+  - Added device pairing section with code input
+  - QR code scanning support for instant login
+  - URL parameter handling for automatic code entry (`?code=123456`)
+  - Improved layout with divider between login methods
+  - Version badge updated to v0.5.0
+
+- **Word Form Redesign**:
+  - Removed separate `NounFields` and `VerbFields` components
+  - Integrated all fields into single collapsible form
+  - Improved label styling with uppercase text and muted colors
+  - Better visual hierarchy with larger input fonts
+  - Conditional rendering based on word type (noun/verb)
+
+- **Settings Page Restructure**:
+  - Three-section layout: Notifications, Device Pairing, Danger Zone
+  - Improved spacing and visual separation between sections
+  - Enhanced notification permission status display
+  - Added destructive styling for data reset section
+
 - **Architecture Improvements**:
   - Extracted header to `SiteHeader` server component
   - Moved UserBadge data fetching from client to server (layout level)
   - Refactored layout.tsx to use server-side data fetching for header props
+  - Login page converted to client component with Suspense wrapper
 
 - **Performance Tweaks**:
   - Replaced `force-dynamic` with `revalidate` for better caching
   - Updated next.config.ts with image optimization settings
 
 ### Fixed
+- **TypeScript Error**: Fixed Zod validation error handling
+  - Replaced deprecated `flatten()` and `format()` methods
+  - Now using modern Zod v4 approach with `error.issues` iteration
+  - Properly constructs `Record<string, string[]>` for form errors
+  - Avoids all deprecated Zod methods
+
 - **Hydration Issues**:
   - Fixed "Server rendered HTML didn't match client" errors
   - Resolved WordForm hydration by removing responsive grid layout
   - Fixed "Server Functions cannot be called during initial render" error
   - Moved async data fetching to proper server components
 
+### Database
+- **New Table**: `session_transfers`
+  - `code` (TEXT): 6-digit pairing code
+  - `refresh_token` (TEXT): User's refresh token
+  - `access_token` (TEXT): User's access token
+  - `expires_at` (TIMESTAMPTZ): Auto-set to 5 minutes from creation
+  - `created_at` (TIMESTAMPTZ): Timestamp of code generation
+
+### Dependencies
+- Added `react-qr-code` (^2.0.18) for QR code generation
+
 ### Technical Details
 - Build output: All authenticated pages remain dynamic (ƒ) as intended
 - Static pages: login, robots.txt, sitemap.xml, manifest pre-rendered (○)
-- 42 files changed with comprehensive refactoring
+- Session transfer uses Supabase `setSession()` for secure token handling
+- Device sync works across all platforms (desktop, mobile, tablet)
 
 ## [0.4.0] - 2025-12-12
 

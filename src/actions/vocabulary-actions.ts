@@ -8,19 +8,28 @@ import type { TablesUpdate } from "@/types/database.types";
 
 const formSchema = z.object({
   word: z.string().min(1, "Kelime girmelisin"),
-  meaning_tr: z.string().min(1, "Türkçe anlamını girmelisin"),
-  type: z.enum(["noun", "verb", "adjective", "phrase", "other"]),
-  article: z.enum(["der", "die", "das"]).nullable().optional(),
-  plural: z.string().optional(),
-  example_sentence: z.string().optional(),
-  conjugation_ich: z.string().optional(),
-  conjugation_du: z.string().optional(),
-  conjugation_er_sie_es: z.string().optional(),
-  conjugation_wir: z.string().optional(),
-  conjugation_ihr: z.string().optional(),
-  conjugation_sie_Sie: z.string().optional(),
+  // Türkçe anlamı bile opsiyonel yapabilirsin, sonra doldurursun.
+  meaning_tr: z.string().min(1, "Türkçe anlamını girmelisin"), 
+  
+  // Varsayılan olarak noun seçili gelir ama validation hatası vermez
+  type: z.enum(["noun", "verb", "adjective", "phrase", "other"]).default("noun"),
+
+  // ARTIK HİÇBİRİ ZORUNLU DEĞİL
+  article: z.enum(["der", "die", "das"]).optional().nullable(),
+  plural: z.string().optional().nullable(),
+  example_sentence: z.string().optional().nullable(),
+  
+  // Verb çekimleri tamamen opsiyonel
+  conjugation_ich: z.string().optional().nullable(),
+  conjugation_du: z.string().optional().nullable(),
+  conjugation_er_sie_es: z.string().optional().nullable(),
+  conjugation_wir: z.string().optional().nullable(),
+  conjugation_ihr: z.string().optional().nullable(),
+  conjugation_sie_Sie: z.string().optional().nullable(),
+
   category: z.string().optional(),
 });
+// superRefine BLOKLARINI SİLDİK. Artık "Noun seçtin ama artikel girmedin" hatası yok.
 
 export type FormState = {
   message: string;
@@ -33,47 +42,58 @@ export async function addWordAction(
   formData: FormData,
 ): Promise<FormState> {
   const supabase = await createClient();
-
   const cookieStore = await cookies();
   const activeGroupId = cookieStore.get("active_group_id")?.value;
 
-  const type = formData.get("type");
+  const type = formData.get("type") || "noun"; // Seçilmediyse noun kabul et
 
-  let conjugationData = null;
-  if (type === "verb") {
-    conjugationData = {
-      ich: formData.get("conjugation_ich"),
-      du: formData.get("conjugation_du"),
-      er_sie_es: formData.get("conjugation_er_sie_es"),
-      wir: formData.get("conjugation_wir"),
-      ihr: formData.get("conjugation_ihr"),
-      sie_Sie: formData.get("conjugation_sie_Sie"),
-    };
-  }
+  // Çekim verilerini topla ama boşlarsa null gönder
+  const conjugationData = {
+      ich: formData.get("conjugation_ich") || null,
+      du: formData.get("conjugation_du") || null,
+      er_sie_es: formData.get("conjugation_er_sie_es") || null,
+      wir: formData.get("conjugation_wir") || null,
+      ihr: formData.get("conjugation_ihr") || null,
+      sie_Sie: formData.get("conjugation_sie_Sie") || null,
+  };
 
   const rawData = {
     word: formData.get("word"),
     meaning_tr: formData.get("meaning_tr"),
-    type: type,
-    article: formData.get("article") || null,
-    plural: formData.get("plural"),
-    example_sentence: formData.get("example_sentence"),
-    category: formData.get("category"),
-    conjugation: conjugationData,
-    group_id: activeGroupId || null, // 3. GRUP ID'SİNİ EKLE (Varsa grup, yoksa null)
-  } as any;
+    type,
+    article: formData.get("article") || null, // Seçilmediyse null gider
+    plural: formData.get("plural") || null,
+    example_sentence: formData.get("example_sentence") || null,
+    // Veritabanına boş obje değil, tamamen null veya dolu obje gönderelim
+    conjugation: type === 'verb' ? conjugationData : null, 
+    category: formData.get("category") || "general",
+    group_id: activeGroupId || null,
+  };
 
   const validatedFields = formSchema.safeParse(rawData);
 
   if (!validatedFields.success) {
+    // Build errors object from issues array (modern Zod v4 approach)
+    const errors: Record<string, string[]> = {};
+    
+    for (const issue of validatedFields.error.issues) {
+      const path = issue.path.join('.');
+      if (path) {
+        if (!errors[path]) {
+          errors[path] = [];
+        }
+        errors[path].push(issue.message);
+      }
+    }
+    
     return {
       success: false,
-      message: "Lütfen alanları kontrol et.",
-      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Eksik bilgi var.",
+      errors,
     };
   }
 
-  const { error } = await supabase.from("vocabulary").insert([rawData]);
+  const { error } = await supabase.from("vocabulary").insert([rawData] as any);
 
   if (error) {
     console.error("Supabase Error:", error);
@@ -83,8 +103,9 @@ export async function addWordAction(
   revalidatePath("/dashboard");
   revalidatePath("/vocabulary");
 
-  return { success: true, message: "Kelime başarıyla eklendi!" };
+  return { success: true, message: "Kelime kaydedildi!" };
 }
+
 
 export async function updateWordAction(
   prevState: FormState,

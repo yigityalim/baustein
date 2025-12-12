@@ -164,6 +164,33 @@ export type Database = {
           },
         ]
       }
+      session_transfers: {
+        Row: {
+          access_token: string | null
+          code: string
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          refresh_token: string
+        }
+        Insert: {
+          access_token?: string | null
+          code: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          refresh_token: string
+        }
+        Update: {
+          access_token?: string | null
+          code?: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          refresh_token?: string
+        }
+        Relationships: []
+      }
       study_groups: {
         Row: {
           created_at: string
