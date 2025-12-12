@@ -1,4 +1,5 @@
 import { Search } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,18 @@ import {
 import { EditWordDialog } from "@/components/vocabulary/edit-word-dialog";
 import { createClient } from "@/lib/supabase/server";
 
-export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "Sözlüğüm",
+  description:
+    "Almanca kelime dağarcığınız. Tüm öğrendiğiniz kelimeleri, artikellerini ve çoğul formlarını görüntüleyin.",
+  openGraph: {
+    title: "Sözlüğüm | Baustein",
+    description: "Almanca kelime dağarcığınızı görüntüleyin.",
+  },
+};
+
+// ISR: Her 30 saniyede bir sayfayı yeniden oluştur
+export const revalidate = 30;
 
 export default async function VocabularyPage({
   searchParams,

@@ -1,4 +1,5 @@
 import { Ban, HelpCircle, MessageCircle } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,6 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
+export const metadata: Metadata = {
+  title: "Gramer Laboratuvarı",
+  description:
+    "Almanca dilbilgisi pratikleri. Negation (olumsuzlama), W-Fragen (soru sözcükleri) ve smalltalk çalışmaları.",
+};
 
 export default function GrammarHubPage() {
   return (

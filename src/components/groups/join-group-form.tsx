@@ -14,7 +14,21 @@ export function JoinGroupForm() {
 
   useEffect(() => {
     if (state.success) toast.success("Gruba katıldın!");
-    if (state.success === false) toast.error(state.message);
+    if (state.success === false) {
+      const debugInfo = (
+        state as { debug?: { code?: string; error?: string; hint?: string } }
+      ).debug;
+      const errorMsg = debugInfo
+        ? `${state.message}\n\nHata: ${debugInfo.error || "Bilinmiyor"}\n${debugInfo.hint ? `İpucu: ${debugInfo.hint}` : ""}`
+        : state.message;
+
+      toast.error(errorMsg, { duration: 10000 });
+
+      // Console'a da yaz
+      if (debugInfo) {
+        console.error("Join Group Error:", debugInfo);
+      }
+    }
   }, [state]);
 
   return (

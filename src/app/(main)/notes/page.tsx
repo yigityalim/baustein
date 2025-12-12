@@ -1,6 +1,15 @@
+import type { Metadata } from "next";
 import { AddNoteDialog } from "@/components/notes/add-note-dialog";
 import { NoteCard } from "@/components/notes/note-card";
 import { createClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  title: "Notlarım",
+  description:
+    "Almanca öğrenme notlarınız, ipuçları ve hatırlatmalarınız. Kişisel öğrenme notlarınızı buraya kaydedin.",
+};
+
+export const revalidate = 30;
 
 export default async function NotesPage() {
   const supabase = await createClient();

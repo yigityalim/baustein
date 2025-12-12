@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { ArticleGame } from "@/components/practice/article-game";
+
+export const metadata: Metadata = {
+  title: "Artikel Trainer",
+  description:
+    "Der, Die, Das pratik oyunu. Almanca artikellerini hızlıca öğrenin ve reflekslerinizi geliştirin.",
+};
 
 export default function ArticleGamePage() {
   return (

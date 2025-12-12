@@ -5,6 +5,7 @@ import "./globals.css";
 import type React from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,13 +18,64 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Baustein",
-  description: "Almanca Öğrenme Asistanı",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  ),
+  title: {
+    default: "Baustein - Almanca Öğrenme Platformu",
+    template: "%s | Baustein",
+  },
+  description:
+    "Geliştiriciler için tasarlanmış Almanca A1.1 öğrenme platformu. Kelime dağarcığı, dilbilgisi pratikleri ve interaktif oyunlarla Almanca öğren.",
+  keywords: [
+    "almanca öğren",
+    "german learning",
+    "a1 almanca",
+    "almanca kelime",
+    "deutsch lernen",
+    "almanca sözlük",
+    "almanca pratik",
+    "almanca oyunlar",
+  ],
+  authors: [{ name: "Baustein Team" }],
+  creator: "Baustein",
+  publisher: "Baustein",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "Baustein",
+  },
+  openGraph: {
+    type: "website",
+    locale: "tr_TR",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+    title: "Baustein - Almanca Öğrenme Platformu",
+    description:
+      "Geliştiriciler için tasarlanmış Almanca A1.1 öğrenme platformu. Kelime dağarcığı, dilbilgisi pratikleri ve interaktif oyunlarla Almanca öğren.",
+    siteName: "Baustein",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Baustein - Almanca Öğrenme Platformu",
+    description:
+      "Geliştiriciler için tasarlanmış Almanca A1.1 öğrenme platformu.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -40,7 +92,11 @@ export default function RootLayout({
   return (
     <html lang="tr" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={cn(
+          "bg-background min-h-screen font-sans antialiased",
+          geistSans.variable,
+          geistMono.variable,
+        )}
       >
         <ThemeProvider
           attribute="class"

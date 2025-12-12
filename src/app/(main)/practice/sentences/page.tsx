@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { SentenceBuilder } from "@/components/practice/sentence-builder";
+
+export const metadata: Metadata = {
+  title: "Cümle Kurma",
+  description:
+    "Almanca cümle kurma pratikleri. Ja/Nein soruları, olumsuzlama ve diyalog çalışmaları.",
+};
 
 export default async function SentencesPage({
   searchParams,

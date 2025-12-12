@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { VerbTrainer } from "@/components/practice/verb-trainer";
+
+export const metadata: Metadata = {
+  title: "Fiil Çekimi",
+  description:
+    "Almanca fiil çekimlerini pratik edin. Ich bin, du bist, er/sie/es ist... Tüm fiil formlarını öğrenin.",
+};
 
 export default function VerbsPage() {
   return (

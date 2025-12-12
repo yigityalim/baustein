@@ -8,6 +8,7 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { getDashboardStats } from "@/actions/vocabulary-actions";
@@ -18,7 +19,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
 
-export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description:
+    "Almanca öğrenme ilerlemenizi takip edin. İstatistikler, sıralama ve günlük hedeflerinizi görüntüleyin.",
+  openGraph: {
+    title: "Dashboard | Baustein",
+    description: "Almanca öğrenme ilerlemenizi takip edin.",
+  },
+};
+
+// ISR: Her 60 saniyede bir sayfayı yeniden oluştur
+export const revalidate = 60;
 
 export default async function DashboardPage() {
   const stats = await getDashboardStats();

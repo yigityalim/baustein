@@ -1,4 +1,5 @@
 import { LogOut, Users } from "lucide-react";
+import type { Metadata } from "next";
 import { leaveGroupAction } from "@/actions/group-actions";
 import { CreateGroupForm } from "@/components/groups/create-group-form";
 import { JoinGroupForm } from "@/components/groups/join-group-form";
@@ -13,6 +14,16 @@ import {
 } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
 
+export const metadata: Metadata = {
+  title: "Çalışma Gruplarım",
+  description:
+    "Arkadaşlarınızla birlikte Almanca öğrenin. Grup oluşturun, katılın ve sıralamada rekabet edin.",
+  openGraph: {
+    title: "Çalışma Gruplarım | Baustein",
+    description: "Arkadaşlarınızla birlikte Almanca öğrenin.",
+  },
+};
+
 export default async function GroupsPage() {
   const supabase = await createClient();
   const {
@@ -21,7 +32,6 @@ export default async function GroupsPage() {
 
   if (!user) return <div>Giriş yapmalısın.</div>;
 
-  // Üyesi olduğum grupları çek
   const { data: myGroups } = await supabase
     .from("group_members")
     .select(`

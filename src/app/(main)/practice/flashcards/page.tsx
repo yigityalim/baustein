@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { FlashCardGame } from "@/components/practice/flash-card";
+
+export const metadata: Metadata = {
+  title: "Flashcards",
+  description:
+    "Kelime hazınınızı flashcard'larla test edin. Almanca-Türkçe çeviri pratikleri.",
+};
 
 export default function FlashcardsPage() {
   return (

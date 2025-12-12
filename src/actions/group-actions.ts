@@ -35,6 +35,8 @@ export async function createGroupAction(prevState: any, formData: FormData) {
 
   // Grubu oluştur
   const joinCode = generateJoinCode();
+  console.log("🎯 Grup oluşturuluyor:", { name, joinCode });
+
   const { data: group, error: groupError } = await supabase
     .from("study_groups")
     .insert([{ name, join_code: joinCode, created_by: user.id }])
@@ -42,9 +44,11 @@ export async function createGroupAction(prevState: any, formData: FormData) {
     .single();
 
   if (groupError || !group) {
-    console.error(groupError);
+    console.error("❌ Grup oluşturma hatası:", groupError);
     return { success: false, message: "Grup oluşturulamadı." };
   }
+
+  console.log("✅ Grup oluşturuldu:", { groupId: group.id, joinCode });
 
   // Oluşturan kişiyi otomatik üye yap (Admin)
   const { error: memberError } = await supabase
@@ -52,8 +56,11 @@ export async function createGroupAction(prevState: any, formData: FormData) {
     .insert([{ group_id: group.id, user_id: user.id }]);
 
   if (memberError) {
+    console.error("❌ Üyelik hatası:", memberError);
     return { success: false, message: "Üyelik kaydı başarısız." };
   }
+
+  console.log("✅ Grup kuruldu ve üyelik eklendi:", { joinCode });
 
   revalidatePath("/groups");
   return { success: true, message: "Grup kuruldu!", code: joinCode };
@@ -66,18 +73,45 @@ export async function joinGroupAction(prevState: any, formData: FormData) {
 
   if (!user) return { success: false, message: "Giriş yapmalısınız" };
 
-  const code = formData.get("code") as string;
+  const code = ((formData.get("code") as string) || "").trim().toUpperCase();
+
+  if (!code) {
+    return {
+      success: false,
+      message: "Davet kodu boş olamaz.",
+      debug: { error: "Code is empty" },
+    };
+  }
+
+  console.log("🔍 Grup aranıyor:", { code, userId: user.id });
 
   // Önce grubu bul
   const { data: group, error: findError } = await supabase
     .from("study_groups")
     .select("id")
     .eq("join_code", code)
-    .single();
+    .maybeSingle();
 
   if (findError || !group) {
-    return { success: false, message: "Geçersiz davet kodu." };
+    console.error("❌ Grup bulunamadı:", {
+      code,
+      error: findError,
+      message: findError?.message,
+      details: findError?.details,
+      hint: findError?.hint,
+    });
+    return {
+      success: false,
+      message: "Geçersiz davet kodu.",
+      debug: {
+        code,
+        error: findError?.message,
+        hint: findError?.hint,
+      },
+    };
   }
+
+  console.log("✅ Grup bulundu:", { groupId: group.id, code });
 
   // Üye yap
   const { error: joinError } = await supabase
@@ -85,12 +119,33 @@ export async function joinGroupAction(prevState: any, formData: FormData) {
     .insert([{ group_id: group.id, user_id: user.id }]);
 
   if (joinError) {
+    console.error("❌ Gruba katılma hatası:", {
+      groupId: group.id,
+      userId: user.id,
+      code: joinError.code,
+      message: joinError.message,
+      details: joinError.details,
+      hint: joinError.hint,
+    });
     // Unique constraint hatasıysa zaten üyedir
     if (joinError.code === "23505") {
       return { success: false, message: "Zaten bu gruptasın." };
     }
-    return { success: false, message: "Katılma başarısız." };
+    return {
+      success: false,
+      message: "Katılma başarısız.",
+      debug: {
+        code: joinError.code,
+        error: joinError.message,
+        hint: joinError.hint,
+      },
+    };
   }
+
+  console.log("✅ Gruba başarıyla katıldı:", {
+    groupId: group.id,
+    userId: user.id,
+  });
 
   revalidatePath("/groups");
   return { success: true, message: "Gruba katıldın!" };

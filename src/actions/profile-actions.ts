@@ -12,7 +12,7 @@ export async function getUserProfileAction() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("username, xp, current_streak, avatar_url")
+    .select("id, username, xp, current_streak, avatar_url")
     .eq("id", user.id)
     .single();
 
