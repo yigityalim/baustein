@@ -3,6 +3,7 @@
 import { ArrowRight, CheckCircle2, Lightbulb, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { awardXp } from "@/actions/game-actions";
 import { getSentences } from "@/actions/sentence-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -59,7 +60,9 @@ export function SentenceBuilder({ topic = "ja_nein" }: { topic?: string }) {
 
     if (userSentence === correctSentence) {
       setIsCorrect(true);
-      toast.success("Richtig! (Doğru)");
+      toast.success("Mükemmel! +15 XP");
+
+      awardXp(15);
     } else {
       setIsCorrect(false);
       toast.error("Falsch! (Yanlış)");

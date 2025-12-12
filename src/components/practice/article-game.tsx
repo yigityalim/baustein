@@ -25,6 +25,7 @@ type Word = {
 
 export function ArticleGame() {
   const [words, setWords] = useState<Word[]>([]);
+  const [solvedWords, setSolvedWords] = useState<Set<string>>(new Set());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [score, setScore] = useState(0);
@@ -60,9 +61,17 @@ export function ArticleGame() {
           `Falsch! Doğrusu: ${currentWord.article?.toUpperCase()} ${currentWord.word}`,
           { duration: 1500 },
         );
+        registerWordPractice(currentWord.id, false);
       }
 
-      registerWordPractice(currentWord.id, isCorrect);
+      if (solvedWords.has(currentWord.id)) {
+        toast.success("Doğru! (Tekrar olduğu için XP yok)", { duration: 1000 });
+      } else {
+        toast.success("Richtig! +10 XP", { duration: 800 });
+        registerWordPractice(currentWord.id, true);
+
+        setSolvedWords((prev) => new Set(prev).add(currentWord.id));
+      }
 
       setTimeout(
         () => {

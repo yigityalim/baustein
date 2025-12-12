@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { AddNoteDialog } from "@/components/notes/add-note-dialog";
 import { NoteCard } from "@/components/notes/note-card";
 import { createClient } from "@/lib/supabase/server";
@@ -13,20 +14,37 @@ export const revalidate = 30;
 
 export default async function NotesPage() {
   const supabase = await createClient();
+  const cookieStore = await cookies();
+  const activeGroupId = cookieStore.get("active_group_id")?.value; // EKLENDİ
 
-  const { data: notes } = await supabase
+  let query = supabase
     .from("notes")
     .select("*")
     .order("is_pinned", { ascending: false })
     .order("created_at", { ascending: false });
 
+  if (activeGroupId) {
+    query = query.eq("group_id", activeGroupId);
+  } else {
+    query = query.is("group_id", null);
+  }
+
+  const { data: notes } = await query;
+
   return (
     <div className="space-y-6 md:space-y-8 mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl container">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="font-bold text-3xl">Ders Notları</h1>
+          <h1 className="flex items-center gap-2 font-bold text-3xl">
+            Ders Notları
+            {activeGroupId && (
+              <span className="bg-primary/10 px-2 py-1 rounded-md font-normal text-primary text-sm">
+                Grup Modu
+              </span>
+            )}
+          </h1>
           <p className="text-muted-foreground">
-            Derste aldığın hızlı notlar ve kurallar.
+            {activeGroupId ? "Bu gruptaki ortak notlar." : "Kişisel notların."}
           </p>
         </div>
         <AddNoteDialog />

@@ -115,3 +115,11 @@ export async function finishGameBonus() {
     p_xp_amount: 50, // Oyun bitirme bonusu
   });
 }
+
+// Genel XP verme fonksiyonu
+export async function awardXp(amount: number) {
+  const supabase = await createClient();
+  await supabase.rpc("update_user_xp", {
+    p_xp_amount: amount,
+  });
+}
